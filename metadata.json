@@ -1,0 +1,6 @@
+{
+  "name": "Travel With Guru - Walk the Path of Wisdom",
+  "description": "Official website and spiritual journey platform for Travel With Guru. Explore sacred programmes, memberships, wellness store, consultations, and community across India, Nepal, and Malaysia.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

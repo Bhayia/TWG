@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-saffron: #C98224;
+    --color-kumkum: #8C281C;
+    --color-sandalwood: #D9B47A;
+    --color-ivory: #F6EBD4;
+    --color-temple-brown: #4A2819;
+    --color-charcoal: #181513;
+    --color-gold: #B58A45;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #12100E;
+    color: #F6EBD4;
+  }
+
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Accessibility Focus Rings */
+  :focus-visible {
+    outline: 2px solid #D9B47A;
+    outline-offset: 3px;
+  }
+
+  /* Honor Prefers-Reduced-Motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+.font-serif-cormorant {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
+}
+
+/* Subtle sacred film grain overlay */
+.bg-grain {
+  background-image: radial-gradient(rgba(201, 130, 36, 0.04) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #181513;
+}
+::-webkit-scrollbar-thumb {
+  background: #4A2819;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C98224;
+}
+
+/* Text gold gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #F6EBD4 0%, #D9B47A 50%, #C98224 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-saffron-gradient {
+  background: linear-gradient(135deg, #FFB049 0%, #C98224 60%, #8C281C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

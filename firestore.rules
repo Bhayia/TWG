@@ -1,0 +1,99 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == '365servicestcr@gmail.com' ||
+        (request.auth.token.keys().hasAll(['admin']) && request.auth.token.admin == true) ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Public readable site settings & CMS content
+    match /siteSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /memberships/{membershipId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /journeys/{journeyId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /faqs/{faqId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /testimonials/{testimonialId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /media/{mediaId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Bookings: Visitors can create, Admins can read & manage all, Users can read their own
+    match /bookings/{bookingId} {
+      allow create: if request.resource.data.attendeeName is string &&
+                       request.resource.data.attendeeEmail is string &&
+                       request.resource.data.eventId is string &&
+                       request.resource.data.totalAmount is number;
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.attendeeEmail == request.auth.token.email);
+      allow update, delete: if isAdmin();
+    }
+
+    // Orders: Visitors can create, Admins can read & manage all, Users can read their own
+    match /orders/{orderId} {
+      allow create: if request.resource.data.customerName is string &&
+                       request.resource.data.customerEmail is string &&
+                       request.resource.data.totalAmount is number;
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.customerEmail == request.auth.token.email);
+      allow update, delete: if isAdmin();
+    }
+
+    // Inquiries: Visitors can submit, Admins can read & manage
+    match /inquiries/{inquiryId} {
+      allow create: if request.resource.data.name is string &&
+                       request.resource.data.email is string &&
+                       request.resource.data.message is string;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // User profiles
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create, update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Default deny for unmapped paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
